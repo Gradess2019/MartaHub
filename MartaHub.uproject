@@ -38,6 +38,10 @@
 		{
 			"Name": "MovementPack",
 			"Enabled": true
+		},
+		{
+			"Name": "CommandPack",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
