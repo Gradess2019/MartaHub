@@ -52,5 +52,10 @@ protected:
 	)
 	void OverrideLocation(UPARAM(DisplayName = "Location", ref)FVector& InLocation);
 
+#if WITH_EDITOR
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void FillSoundMap();
+#endif
+	
 	void PrintError(const char* FunctionName, int Line, const char* Message);
 };

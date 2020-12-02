@@ -3,6 +3,7 @@
 #include "Components/FootstepSoundComponent.h"
 #include "Sound/SoundBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "PhysicsEngine/PhysicsSettings.h"
 
 DEFINE_LOG_CATEGORY(LogFootstepSound);
 
@@ -28,7 +29,7 @@ void UFootstepSoundComponent::Play_Implementation(
 	auto Sound = *SoundPtr;
 	OverrideAttenuation(Sound, InAttenuation);
 	OverrideLocation(InLocation);
-	UGameplayStatics::PlaySoundAtLocation(this,	Sound, InLocation);
+	UGameplayStatics::PlaySoundAtLocation(this, Sound, InLocation);
 }
 
 void UFootstepSoundComponent::PrintError(const char* FunctionName, int Line, const char* Message)
@@ -53,3 +54,17 @@ void UFootstepSoundComponent::OverrideLocation_Implementation(FVector& InLocatio
 {
 	InLocation = InLocation.IsZero() ? GetOwner()->GetActorLocation() : InLocation;
 }
+
+#if WITH_EDITOR
+// Editor
+void UFootstepSoundComponent::FillSoundMap()
+{
+	const auto Settings = UPhysicsSettings::Get();
+	const auto PhysicalSurfaces = &Settings->PhysicalSurfaces;
+	const auto Surfaces = PhysicalSurfaces->GetData();
+	for (int i = 0; i < PhysicalSurfaces->Num(); i++)
+	{
+		Sounds.Add(Surfaces[i].Type, nullptr);
+	}
+}
+#endif
