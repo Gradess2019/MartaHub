@@ -32,6 +32,13 @@ void UFootstepSoundComponent::Play_Implementation(
 	UGameplayStatics::PlaySoundAtLocation(this, Sound, InLocation);
 }
 
+void UFootstepSoundComponent::PlayHit_Implementation(const FHitResult& InHit)
+{
+	const auto SurfaceType = UGameplayStatics::GetSurfaceType(InHit);
+	const auto Location = InHit.ImpactPoint;
+	Play(SurfaceType, Location);
+}
+
 void UFootstepSoundComponent::PrintError(const char* FunctionName, int Line, const char* Message)
 {
 	UE_LOG(
@@ -56,7 +63,6 @@ void UFootstepSoundComponent::OverrideLocation_Implementation(FVector& InLocatio
 }
 
 #if WITH_EDITOR
-// Editor
 void UFootstepSoundComponent::FillSoundMap()
 {
 	const auto Settings = UPhysicsSettings::Get();

@@ -27,6 +27,16 @@ public:
 		UPARAM(DisplayName = "Attenuation")class USoundAttenuation* InAttenuation = nullptr
 	);
 
+	UFUNCTION(
+		BlueprintCallable,
+		BlueprintNativeEvent,
+		Category = "Sound | Footstep Sound Component",
+		meta = (AdvancedDisplay = 1)
+	)
+	void PlayHit(
+		UPARAM(DisplayName = "Hit") const FHitResult& InHit
+	);
+
 protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Footstep Sound")
