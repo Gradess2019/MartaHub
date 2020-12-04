@@ -7,7 +7,10 @@
 		{
 			"Name": "MartaHub",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
@@ -37,6 +40,10 @@
 		},
 		{
 			"Name": "MovementPack",
+			"Enabled": true
+		},
+		{
+			"Name": "CommandPack",
 			"Enabled": true
 		}
 	],
