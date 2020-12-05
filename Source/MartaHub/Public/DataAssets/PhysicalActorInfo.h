@@ -11,7 +11,7 @@
 /**
  * Data asset for physical actors such as cup, table, armchair, etc.
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class MARTAHUB_API UPhysicalActorInfo : public UDataAsset, public IStaticMeshContainer
 {
 	GENERATED_BODY()
