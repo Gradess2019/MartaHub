@@ -25,5 +25,5 @@ public:
 	virtual void AddUp_Implementation(const float AxisValue) override;
 	virtual void AddTurnAround_Implementation(const float AxisValue) override;
 	virtual void AddLookUp_Implementation(const float AxisValue) override;
-	virtual void Space_Implementation() override;
+	virtual void PressSpace_Implementation() override;
 };

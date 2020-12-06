@@ -84,13 +84,22 @@ protected:
 
 	// Action mappings
 	UFUNCTION()
-	void Fire();
+	void PressFire();
 
 	UFUNCTION()
-	void Interact();
+	void ReleaseFire();
 
 	UFUNCTION()
-	void Space();
+	void PressInteract();
+
+	UFUNCTION()
+	void ReleaseInteract();
+
+	UFUNCTION()
+	void PressSpace();
+
+	UFUNCTION()
+	void ReleaseSpace();
 
 	// Setup
 	/** Allows the PlayerController to set up custom input bindings. */
