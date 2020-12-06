@@ -30,10 +30,10 @@ void ADefaultPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(LookUpAxisName, this, &ADefaultPlayerController::LookUp);
 	InputComponent->BindAxis(ScrollAxisName, this, &ADefaultPlayerController::Scroll);
 
-	InputComponent->BindAction(FireActionName, IE_Released, this, &ADefaultPlayerController::Fire);
-	InputComponent->BindAction(InteractActionName, IE_Released, this, &ADefaultPlayerController::Interact);
+	InputComponent->BindAction(InteractActionName, IE_Released, this, &ADefaultPlayerController::ReleaseInteract);
 
-	InputComponent->BindAction(SpaceActionName, IE_Pressed, this, &ADefaultPlayerController::Space);
+	InputComponent->BindAction(FireActionName, IE_Pressed, this, &ADefaultPlayerController::PressFire);
+	InputComponent->BindAction(SpaceActionName, IE_Pressed, this, &ADefaultPlayerController::PressSpace);
 }
 
 void ADefaultPlayerController::MoveForward(const float AxisValue)
@@ -72,22 +72,40 @@ void ADefaultPlayerController::Scroll(const float AxisValue)
 	IInputControllable::Execute_AddScroll(GetPawn(), AxisValue);
 }
 
-void ADefaultPlayerController::Fire()
+void ADefaultPlayerController::PressFire()
 {
 	if (!IsValidPawn()) { return; }
-	IInputControllable::Execute_Fire(GetPawn());
+	IInputControllable::Execute_PressFire(GetPawn());
 }
 
-void ADefaultPlayerController::Interact()
+void ADefaultPlayerController::ReleaseFire()
 {
 	if (!IsValidPawn()) { return; }
-	IInputControllable::Execute_Interact(GetPawn());
+	IInputControllable::Execute_ReleaseFire(GetPawn());
 }
 
-void ADefaultPlayerController::Space()
+void ADefaultPlayerController::PressInteract()
 {
 	if (!IsValidPawn()) { return; }
-	IInputControllable::Execute_Space(GetPawn());
+	IInputControllable::Execute_PressInteract(GetPawn());
+}
+
+void ADefaultPlayerController::ReleaseInteract()
+{
+	if (!IsValidPawn()) { return; }
+	IInputControllable::Execute_ReleaseInteract(GetPawn());
+}
+
+void ADefaultPlayerController::PressSpace()
+{
+	if (!IsValidPawn()) { return; }
+	IInputControllable::Execute_PressSpace(GetPawn());
+}
+
+void ADefaultPlayerController::ReleaseSpace()
+{
+	if (!IsValidPawn()) { return; }
+	IInputControllable::Execute_ReleaseSpace(GetPawn());
 }
 
 bool ADefaultPlayerController::IsValidPawn() const
