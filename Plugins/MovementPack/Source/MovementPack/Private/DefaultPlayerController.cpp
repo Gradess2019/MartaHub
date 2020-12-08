@@ -30,10 +30,13 @@ void ADefaultPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(LookUpAxisName, this, &ADefaultPlayerController::LookUp);
 	InputComponent->BindAxis(ScrollAxisName, this, &ADefaultPlayerController::Scroll);
 
-	InputComponent->BindAction(InteractActionName, IE_Released, this, &ADefaultPlayerController::ReleaseInteract);
-
 	InputComponent->BindAction(FireActionName, IE_Pressed, this, &ADefaultPlayerController::PressFire);
+	InputComponent->BindAction(InteractActionName, IE_Pressed, this, &ADefaultPlayerController::PressInteract);
 	InputComponent->BindAction(SpaceActionName, IE_Pressed, this, &ADefaultPlayerController::PressSpace);
+	
+	InputComponent->BindAction(FireActionName, IE_Released, this, &ADefaultPlayerController::ReleaseFire);
+	InputComponent->BindAction(InteractActionName, IE_Released, this, &ADefaultPlayerController::ReleaseInteract);
+	InputComponent->BindAction(SpaceActionName, IE_Released, this, &ADefaultPlayerController::ReleaseSpace);
 }
 
 void ADefaultPlayerController::MoveForward(const float AxisValue)
