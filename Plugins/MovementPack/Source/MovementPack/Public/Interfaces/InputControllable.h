@@ -47,13 +47,25 @@ public:
 
 	/** Allows actor to hit, fire, etc. */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
-	void Fire();
+	void PressFire();
+
+	/** Allows actor to hit, fire, etc. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
+	void ReleaseFire();
 
 	/** Allows actor to interact with other ones */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
-	void Interact();
+	void PressInteract();
+	
+	/** Allows actor to interact with other ones */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
+	void ReleaseInteract();
 
 	/** Allows actor to use jump, brakes, etc. */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
-	void Space();
+	void PressSpace();
+	
+	/** Allows actor to use jump, brakes, etc. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Movement Pack")
+	void ReleaseSpace();
 };

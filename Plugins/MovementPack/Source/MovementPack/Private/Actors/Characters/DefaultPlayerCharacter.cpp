@@ -27,7 +27,7 @@ void ADefaultPlayerCharacter::AddLookUp_Implementation(const float AxisValue)
 	AddControllerPitchInput(AxisValue);
 }
 
-void ADefaultPlayerCharacter::Space_Implementation()
+void ADefaultPlayerCharacter::PressSpace_Implementation()
 {
 	Jump();
 }
