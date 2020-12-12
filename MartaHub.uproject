@@ -46,6 +46,10 @@
 		{
 			"Name": "CommandPack",
 			"Enabled": true
+		},
+		{
+			"Name": "SettingsPack",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
