@@ -48,7 +48,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "SettingsPack",
+			"Name": "UserInterfacePack",
 			"Enabled": true
 		}
 	],
