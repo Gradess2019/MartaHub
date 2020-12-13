@@ -46,6 +46,10 @@
 		{
 			"Name": "CommandPack",
 			"Enabled": true
+		},
+		{
+			"Name": "UserInterfacePack",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
