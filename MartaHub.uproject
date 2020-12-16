@@ -50,6 +50,10 @@
 		{
 			"Name": "UserInterfacePack",
 			"Enabled": true
+		},
+		{
+			"Name": "SimpleRadio",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
