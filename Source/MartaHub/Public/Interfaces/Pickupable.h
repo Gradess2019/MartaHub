@@ -37,7 +37,7 @@ public:
 		BlueprintNativeEvent,
 		Category = "Pickupable"
 	)
-	void PrepareForPickup();
+	void PreparePickup();
 
 	UFUNCTION(
 		BlueprintCallable,
