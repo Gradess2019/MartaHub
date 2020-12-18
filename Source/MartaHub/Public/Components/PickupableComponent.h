@@ -11,6 +11,9 @@ DECLARE_LOG_CATEGORY_EXTERN(LogPickupableComponent, Log, All);
 
 class UStaticMeshComponent;
 
+/**
+ * Component that gets ability physical actors (e.g. AStaticMeshActor) to be pickuped by someone or something
+ */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MARTAHUB_API UPickupableComponent : public UActorComponent, public IPickupable
 {
@@ -21,18 +24,23 @@ public:
 
 protected:
 
+	/** Offset from pickup location */
 	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
 	FVector Offset;
 
+	/** Cached actor X bound */
 	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
 	float CachedBound;
 
+	/** Parent root */
 	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
 	UStaticMeshComponent* Root;
 
+	/** Timer for CheckOverlaps() method */
 	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
 	FTimerHandle CheckOverlapsTimer;
 
+	/** Collision profile name of the object, when it is pickuped */
 	UPROPERTY(
 		BlueprintReadWrite,
 		EditAnywhere,
@@ -40,6 +48,7 @@ protected:
 	)
 	FName PickupProfileName;
 
+	/** Collision profile name of the object, when player releases it */
 	UPROPERTY(
 		BlueprintReadWrite,
 		EditAnywhere,
@@ -55,6 +64,7 @@ protected:
 	)
 	TSubclassOf<AActor> ClassFilter;
 
+	/** Delay between CheckOverlaps() calling */
 	UPROPERTY(
 		BlueprintReadWrite,
 		EditAnywhere,
@@ -62,7 +72,7 @@ protected:
 	)
 	float CheckOverlapsRate;
 
-	/** SetPickupLocation interpolation speed. The higher, the faster */
+	/** SetPickupLocation() interpolation speed. The higher, the faster */
 	UPROPERTY(
 		BlueprintReadWrite,
 		EditAnywhere,
@@ -72,6 +82,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	/** Try to find and setup root */
 	UFUNCTION(
 		BlueprintCallable,
 		BlueprintNativeEvent,
@@ -79,6 +90,7 @@ protected:
 	)
 	bool SetupRoot();
 
+	/** Calculates the offset of the actor */
 	UFUNCTION(
 		BlueprintCallable,
 		BlueprintNativeEvent,
@@ -86,6 +98,7 @@ protected:
 	)
 	void SetupOffset();
 
+	/** Calculates the X bound of the actor */
 	UFUNCTION(
 		BlueprintCallable,
 		BlueprintNativeEvent,
@@ -93,6 +106,7 @@ protected:
 	)
 	void CacheBound();
 
+	/** Check if there is any overlapping actor. If not, then enable collision */
 	UFUNCTION(
 		BlueprintCallable,
 		BlueprintNativeEvent,
@@ -100,6 +114,7 @@ protected:
 	)
 	void CheckOverlaps();
 
+	/** Clears and invalidates CheckOverlapsTimer */
 	UFUNCTION(
         BlueprintCallable,
         Category = "Pickupable Component"
