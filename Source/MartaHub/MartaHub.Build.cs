@@ -8,13 +8,14 @@ public class MartaHub : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "MovementPack"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "MovementPack" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "MovementPack", "AdvancedSessions", "AdvancedSteamSessions"});
+		PrivateIncludePathModuleNames.AddRange(new string[] { "MovementPack", "AdvancedSessions", "AdvancedSteamSessions"});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
