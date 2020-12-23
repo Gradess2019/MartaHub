@@ -54,6 +54,18 @@
 		{
 			"Name": "SimpleRadio",
 			"Enabled": true
+		},
+		{
+			"Name": "AdvancedSessions",
+			"Enabled": true
+		},
+		{
+			"Name": "AdvancedSteamSessions",
+			"Enabled": true
+		},
+		{
+			"Name": "SteamFix",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
