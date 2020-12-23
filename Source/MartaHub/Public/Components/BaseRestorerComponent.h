@@ -18,4 +18,10 @@ public:
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Restorer")
 	UCurveFloat* Lerp;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Restorer")
+	float ElapsedTime;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Restorer")
+	bool bRunning;
 };

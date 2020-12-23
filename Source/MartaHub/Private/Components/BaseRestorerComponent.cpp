@@ -10,4 +10,7 @@ UBaseRestorerComponent::UBaseRestorerComponent()
 
 	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveFloatAsset(TEXT("CurveFloat'/Game/MartaHub/Curves/Curve_DefaultLerp_Float.Curve_DefaultLerp_Float'"));
 	Lerp = CurveFloatAsset.Object;
+
+	ElapsedTime = 0.f;
+	bRunning = false;
 }
