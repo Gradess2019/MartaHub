@@ -14,35 +14,18 @@ class MARTAHUB_API ULocationRestorerComponent : public UBaseRestorerComponent
 
 protected:
 
-	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Position Restorer")
+	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Location Restorer")
 	FVector InitialLocation;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Position Restorer")
+	UPROPERTY(BlueprintReadWrite, Category = "Location Restorer")
 	FVector StartLocation;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Position Restorer")
-	UActorPhysicsSnapshot* Snapshot;
-	
 	virtual void BeginPlay() override;
 
-public:
-
-	virtual void TickComponent(
-		float DeltaTime,
-		ELevelTick TickType,
-		FActorComponentTickFunction* ThisTickFunction
-	) override;
-
-protected:
-
-	UFUNCTION()
-	void UpdateElapsedTime(float DeltaTime);
-
-	UFUNCTION()
-	void UpdateLocation() const;
-
-	UFUNCTION()
-	void CompleteRestoring();
+	virtual void UpdateRestoring_Implementation() override;
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Location Restorer")
+	void UpdateLocation();
 
 	// Restorer interface begin
 	virtual void Restore_Implementation() override;

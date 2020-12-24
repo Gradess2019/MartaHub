@@ -13,35 +13,12 @@ void ULocationRestorerComponent::BeginPlay()
 	}
 }
 
-void ULocationRestorerComponent::TickComponent(
-	float DeltaTime,
-	ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction
-)
+void ULocationRestorerComponent::UpdateRestoring_Implementation()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (bRunning)
-	{
-		UpdateElapsedTime(DeltaTime);
-		UpdateLocation();
-	}
-	else
-	{
-		CompleteRestoring();
-	}
+	UpdateLocation();
 }
 
-void ULocationRestorerComponent::UpdateElapsedTime(float DeltaTime)
-{
-	auto MinTime = 0.f;
-	auto MaxTime = 0.f;
-	Lerp->GetTimeRange(MinTime, MaxTime);
-	bRunning = ElapsedTime < MaxTime;
-	ElapsedTime += DeltaTime;
-}
-
-void ULocationRestorerComponent::UpdateLocation() const
+void ULocationRestorerComponent::UpdateLocation_Implementation()
 {
 	const auto Owner = GetOwner();
 	const auto Alpha = Lerp->GetFloatValue(ElapsedTime);
@@ -50,16 +27,6 @@ void ULocationRestorerComponent::UpdateLocation() const
 	const auto bSweep = false;
 	const auto OutSweepHitResult = nullptr;
 	Owner->SetActorLocation(NewLocation, bSweep, OutSweepHitResult, ETeleportType::ResetPhysics);
-}
-
-void ULocationRestorerComponent::CompleteRestoring()
-{
-	ElapsedTime = 0.f;
-	SetComponentTickEnabled(false);
-
-	if (!IsValid(Snapshot)) { return; }
-	Execute_Restore(Snapshot);
-	Snapshot = nullptr;
 }
 
 void ULocationRestorerComponent::Restore_Implementation()
@@ -79,8 +46,9 @@ void ULocationRestorerComponent::Restore_Implementation()
 void ULocationRestorerComponent::CreateSnapshot(AActor* const Owner)
 {
 	// TODO: What about Object Pool pattern?
-	Snapshot = NewObject<UActorPhysicsSnapshot>();
-	Snapshot->Save_Implementation(Owner);
+	auto NewSnapshot = NewObject<UActorPhysicsSnapshot>();
+	NewSnapshot->Save(Owner);
+	Snapshot = NewSnapshot;
 }
 
 void ULocationRestorerComponent::DisablePhysicsAndCollision() const
