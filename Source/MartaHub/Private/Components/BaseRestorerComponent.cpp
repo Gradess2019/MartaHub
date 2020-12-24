@@ -59,3 +59,19 @@ void UBaseRestorerComponent::CompleteRestoring()
 	Snapshot = nullptr;
 }
 
+void UBaseRestorerComponent::Restore_Implementation()
+{
+	if (bRunning) { return; }
+	bRunning = true;
+	SetComponentTickEnabled(true);
+
+	const auto Owner = GetOwner();
+	CreateSnapshot(Owner);
+}
+
+void UBaseRestorerComponent::CreateSnapshot(AActor* Actor)
+{
+	unimplemented();
+}
+
+

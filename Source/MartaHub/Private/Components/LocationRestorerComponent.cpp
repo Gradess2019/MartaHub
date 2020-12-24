@@ -1,6 +1,8 @@
 // Gradess Games. All rights reserved.
 
 #include "Components/LocationRestorerComponent.h"
+
+#include "Libraries/RestorerHelper.h"
 #include "Net/UnrealNetwork.h"
 
 void ULocationRestorerComponent::BeginPlay()
@@ -32,39 +34,18 @@ void ULocationRestorerComponent::UpdateLocation_Implementation()
 void ULocationRestorerComponent::Restore_Implementation()
 {
 	if (bRunning) { return; }
-	bRunning = true;
-
-	const auto Owner = GetOwner();
-
-	CreateSnapshot(Owner);
-	DisablePhysicsAndCollision();
-
-	StartLocation = Owner->GetActorLocation();
-	SetComponentTickEnabled(true);
+	Super::Restore_Implementation();
+	
+	URestorerHelper::DisablePhysicsAndCollision(GetOwner());
+	StartLocation = GetOwner()->GetActorLocation();
 }
 
-void ULocationRestorerComponent::CreateSnapshot(AActor* const Owner)
+void ULocationRestorerComponent::CreateSnapshot(AActor* Owner)
 {
 	// TODO: What about Object Pool pattern?
 	auto NewSnapshot = NewObject<UActorPhysicsSnapshot>();
 	NewSnapshot->Save(Owner);
 	Snapshot = NewSnapshot;
-}
-
-void ULocationRestorerComponent::DisablePhysicsAndCollision() const
-{
-	const auto Owner = GetOwner();
-
-	// TODO: Add disabling physics and collision to RestorerHelper
-	TArray<UPrimitiveComponent*> Components;
-	const auto bIncludeFromChildActors = true;
-	Owner->GetComponents<UPrimitiveComponent>(Components, bIncludeFromChildActors);
-
-	for (auto Component : Components)
-	{
-		Component->SetSimulatePhysics(false);
-		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
 }
 
 void ULocationRestorerComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

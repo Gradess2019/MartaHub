@@ -41,9 +41,18 @@ protected:
 	UFUNCTION()
 	virtual void UpdateElapsedTime(float DeltaTime);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Restorer")
+	UFUNCTION(BlueprintNativeEvent, Category = "Base Restorer")
 	void UpdateRestoring();
 
 	UFUNCTION()
 	void CompleteRestoring();
+
+public:
+
+	virtual void Restore_Implementation() override;
+
+protected:
+	
+	UFUNCTION(BlueprintCallable, Category = "Base Restorer")
+	virtual void CreateSnapshot(AActor* Actor);
 };

@@ -31,11 +31,7 @@ protected:
 	virtual void Restore_Implementation() override;
 	// Restorer interface end
 	
-	UFUNCTION()
-	void CreateSnapshot(AActor* Owner);
-
-	UFUNCTION()
-	void DisablePhysicsAndCollision() const;
+	virtual void CreateSnapshot(AActor* Owner) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
