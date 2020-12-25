@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "PhysicsRestorable.generated.h"
+#include "Restorable.generated.h"
 
-class USnapshotBase;
+class ISnapshotManager;
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UPhysicsRestorable : public UInterface
+class URestorable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -18,11 +18,11 @@ class UPhysicsRestorable : public UInterface
 /**
  * Represents physical object that can be restored
  */
-class MARTAHUB_API IPhysicsRestorable
+class MARTAHUB_API IRestorable
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Physics Restorable")
-	USnapshotBase* GetPhysicsSnapshot();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Restorable")
+	TScriptInterface<ISnapshotManager> GetSnapshotManager();
 };
