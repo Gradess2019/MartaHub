@@ -3,6 +3,8 @@
 #include "Components/RotationRestorerComponent.h"
 
 
+
+#include "Interfaces/Restorers/PhysicsRestorable.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Libraries/RestorerHelper.h"
 #include "Net/UnrealNetwork.h"
@@ -43,12 +45,13 @@ void URotationRestorerComponent::Restore_Implementation()
 	StartRotation = Owner->GetActorRotation();
 }
 
-void URotationRestorerComponent::CreateSnapshot(AActor* Actor)
+void URotationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
 	// FIXME Replace with Actor->GetSnapshot();
-	// const auto NewSnapshot = NewObject<UActorPhysicsSnapshot>();
-	// NewSnapshot->Save(Actor);
-	// Snapshot = NewSnapshot;
+	if (!Owner->GetClass()->ImplementsInterface(UPhysicsRestorable::StaticClass()))
+	{
+		Snapshot = IPhysicsRestorable::Execute_GetPhysicsSnapshot(Owner);
+	}
 }
 
 void URotationRestorerComponent::GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -2,6 +2,8 @@
 
 #include "Components/LocationRestorerComponent.h"
 
+
+#include "Interfaces/Restorers/PhysicsRestorable.h"
 #include "Libraries/RestorerHelper.h"
 #include "Net/UnrealNetwork.h"
 
@@ -41,12 +43,13 @@ void ULocationRestorerComponent::Restore_Implementation()
 	StartLocation = Owner->GetActorLocation();
 }
 
-void ULocationRestorerComponent::CreateSnapshot(AActor* Owner)
+void ULocationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
 	// TODO: What about Object Pool pattern?
-	auto NewSnapshot = NewObject<UActorPhysicsSnapshot>();
-	NewSnapshot->Save(Owner);
-	Snapshot = NewSnapshot;
+	if (!Owner->GetClass()->ImplementsInterface(UPhysicsRestorable::StaticClass()))
+	{
+		Snapshot = IPhysicsRestorable::Execute_GetPhysicsSnapshot(Owner);
+	}
 }
 
 void ULocationRestorerComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

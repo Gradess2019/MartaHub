@@ -29,6 +29,6 @@ public:
 	virtual void Restore_Implementation() override;
 
 protected:
-	virtual void CreateSnapshot(AActor* Actor) override;
+	virtual void SetupSnapshot(AActor* Owner) override;
 	virtual void GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

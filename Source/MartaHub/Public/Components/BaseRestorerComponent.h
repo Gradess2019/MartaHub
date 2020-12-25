@@ -55,7 +55,7 @@ protected:
 
 	// TODO: Add BlueprintNativeEvent
 	UFUNCTION(BlueprintCallable, Category = "Base Restorer")
-	virtual void CreateSnapshot(AActor* Actor);
+	virtual void SetupSnapshot(AActor* Owner);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Base Restorer")
 	float GetAlpha() const;

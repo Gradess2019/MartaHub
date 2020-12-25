@@ -31,7 +31,7 @@ protected:
 	virtual void Restore_Implementation() override;
 	// Restorer interface end
 	
-	virtual void CreateSnapshot(AActor* Owner) override;
+	virtual void SetupSnapshot(AActor* Owner) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

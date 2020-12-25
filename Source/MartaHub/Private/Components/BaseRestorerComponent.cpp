@@ -66,10 +66,10 @@ void UBaseRestorerComponent::Restore_Implementation()
 	SetComponentTickEnabled(true);
 
 	const auto Owner = GetOwner();
-	CreateSnapshot(Owner);
+	SetupSnapshot(Owner);
 }
 
-void UBaseRestorerComponent::CreateSnapshot(AActor* Actor)
+void UBaseRestorerComponent::SetupSnapshot(AActor* Owner)
 {
 	unimplemented();
 }
