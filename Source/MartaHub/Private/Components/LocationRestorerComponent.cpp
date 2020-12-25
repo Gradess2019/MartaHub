@@ -1,9 +1,8 @@
 // Gradess Games. All rights reserved.
 
 #include "Components/LocationRestorerComponent.h"
-
-
-#include "Interfaces/Restorers/PhysicsRestorable.h"
+#include "Interfaces/Restorers/Restorable.h"
+#include "Interfaces/Snapshots/SnapshotManager.h"
 #include "Libraries/RestorerHelper.h"
 #include "Net/UnrealNetwork.h"
 
@@ -46,9 +45,10 @@ void ULocationRestorerComponent::Restore_Implementation()
 void ULocationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
 	// TODO: What about Object Pool pattern?
-	if (!Owner->GetClass()->ImplementsInterface(UPhysicsRestorable::StaticClass()))
+	if (Owner->GetClass()->ImplementsInterface(URestorable::StaticClass()))
 	{
-		Snapshot = IPhysicsRestorable::Execute_GetPhysicsSnapshot(Owner);
+		auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
+		Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
 	}
 }
 

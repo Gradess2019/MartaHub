@@ -26,7 +26,7 @@ void UActorPhysicsSnapshot::CreateComponentPhysicsSnapshots_Implementation(const
 	for (auto Component : ActorComponents)
 	{
 		auto Snapshot = NewObject<UComponentPhysicsSnapshot>();
-		Snapshot->Save(Component);
+		IComponentSaver::Execute_Save(Snapshot, Component);
 		Snapshots.Add(Snapshot);
 	}
 }

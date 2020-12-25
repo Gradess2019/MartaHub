@@ -1,10 +1,8 @@
 // Gradess Games. All rights reserved.
 
 #include "Components/RotationRestorerComponent.h"
-
-
-
-#include "Interfaces/Restorers/PhysicsRestorable.h"
+#include "Interfaces/Restorers/Restorable.h"
+#include "Interfaces/Snapshots/SnapshotManager.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Libraries/RestorerHelper.h"
 #include "Net/UnrealNetwork.h"
@@ -47,10 +45,10 @@ void URotationRestorerComponent::Restore_Implementation()
 
 void URotationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
-	// FIXME Replace with Actor->GetSnapshot();
-	if (!Owner->GetClass()->ImplementsInterface(UPhysicsRestorable::StaticClass()))
+	if (Owner->GetClass()->ImplementsInterface(URestorable::StaticClass()))
 	{
-		Snapshot = IPhysicsRestorable::Execute_GetPhysicsSnapshot(Owner);
+		const auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
+		Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
 	}
 }
 

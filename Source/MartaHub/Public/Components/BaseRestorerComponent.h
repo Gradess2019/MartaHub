@@ -33,7 +33,7 @@ protected:
 	USnapshotBase* Snapshot;
 
 public:
-
+	
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:

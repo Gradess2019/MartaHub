@@ -1,6 +1,8 @@
 // Gradess Games. All rights reserved.
 
 #include "Components/BaseRestorerComponent.h"
+#include "Interfaces/Snapshots/SnapshotManager.h"
+#include "Interfaces/Restorers/Restorable.h"
 #include "Snapshots/SnapshotBase.h"
 
 UBaseRestorerComponent::UBaseRestorerComponent()
@@ -55,7 +57,15 @@ void UBaseRestorerComponent::CompleteRestoring()
 	SetComponentTickEnabled(false);
 
 	if (!IsValid(Snapshot)) { return; }
-	Execute_Restore(Snapshot);
+	if (Snapshot->CanRestore())
+	{
+		Execute_Restore(Snapshot);
+	}
+	
+	const auto Owner = GetOwner();
+	const auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
+	Manager->Execute_ReleaseSnapshot(Manager.GetObject(), Snapshot);
+	
 	Snapshot = nullptr;
 }
 
