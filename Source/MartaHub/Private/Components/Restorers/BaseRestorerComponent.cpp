@@ -1,6 +1,6 @@
 // Gradess Games. All rights reserved.
 
-#include "Components/BaseRestorerComponent.h"
+#include "Components/Restorers/BaseRestorerComponent.h"
 #include "Interfaces/Snapshots/SnapshotManager.h"
 #include "Interfaces/Restorers/Restorable.h"
 #include "Snapshots/SnapshotBase.h"

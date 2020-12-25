@@ -1,6 +1,6 @@
 // Gradess Games. All rights reserved.
 
-#include "Components/Restorer/SnapshotManagerComponent.h"
+#include "Components/Restorers/SnapshotManagerComponent.h"
 #include "Factories/DefaultSnapshotFactory.h"
 #include "Interfaces/Factories/SnapshotFactory.h"
 #include "Interfaces/Restorers/ActorSaver.h"

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/BaseRestorerComponent.h"
+#include "Components/Restorers/BaseRestorerComponent.h"
 #include "RotationRestorerComponent.generated.h"
 
 /**
