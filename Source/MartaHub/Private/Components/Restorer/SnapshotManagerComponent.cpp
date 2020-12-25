@@ -33,8 +33,8 @@ USnapshotBase* USnapshotManagerComponent::TakeSnapshot_Implementation(const TSub
 		{
 			IActorSaver::Execute_Save(NewSnapshot, GetOwner());
 		}
-		
-		Snapshots.Add(NewSnapshot->GetClass(), Snapshot);
+
+		Snapshots.Add(NewSnapshot->GetClass(), NewSnapshot);
 		Snapshot = NewSnapshot;
 	} else
 	{
