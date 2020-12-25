@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "SnapshotBase.h"
+#include "Interfaces/Restorers/ComponentSaver.h"
+
 #include "ComponentPhysicsSnapshot.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MARTAHUB_API UComponentPhysicsSnapshot : public USnapshotBase
+class MARTAHUB_API UComponentPhysicsSnapshot : public USnapshotBase, public IComponentSaver
 {
 	GENERATED_BODY()
 
@@ -25,7 +27,8 @@ protected:
 	TEnumAsByte<ECollisionEnabled::Type> CollisionType;
 
 public:
-	virtual bool Save(UPrimitiveComponent* InComponent);
+
+	virtual bool Save_Implementation(UActorComponent* InComponent) override;
 	
 	// IRestorer implementation begin
 	virtual void Restore_Implementation() override;

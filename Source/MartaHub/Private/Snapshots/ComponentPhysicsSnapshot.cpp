@@ -2,13 +2,13 @@
 
 #include "Snapshots/ComponentPhysicsSnapshot.h"
 
-bool UComponentPhysicsSnapshot::Save(UPrimitiveComponent* InComponent)
+bool UComponentPhysicsSnapshot::Save_Implementation(UActorComponent* InComponent)
 {
-	if (!IsValid(InComponent)) { return false; }
+	if (!IsValid(InComponent) || !InComponent->IsA(UPrimitiveComponent::StaticClass())) { return false; }
 
-	Component = InComponent;
-	bSimulatePhysics = InComponent->IsSimulatingPhysics();
-	CollisionType = InComponent->GetCollisionEnabled();
+	Component = Cast<UPrimitiveComponent>(InComponent);
+	bSimulatePhysics = Component->IsSimulatingPhysics();
+	CollisionType = Component->GetCollisionEnabled();
 	return true;
 }
 
