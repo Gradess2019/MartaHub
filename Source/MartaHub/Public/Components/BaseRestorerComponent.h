@@ -52,7 +52,11 @@ public:
 	virtual void Restore_Implementation() override;
 
 protected:
-	
+
+	// TODO: Add BlueprintNativeEvent
 	UFUNCTION(BlueprintCallable, Category = "Base Restorer")
 	virtual void CreateSnapshot(AActor* Actor);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Base Restorer")
+	float GetAlpha() const;
 };

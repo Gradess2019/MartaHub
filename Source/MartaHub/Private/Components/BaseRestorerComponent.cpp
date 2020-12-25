@@ -74,4 +74,9 @@ void UBaseRestorerComponent::CreateSnapshot(AActor* Actor)
 	unimplemented();
 }
 
+float UBaseRestorerComponent::GetAlpha() const
+{
+	return Lerp->GetFloatValue(ElapsedTime);
+}
+
 

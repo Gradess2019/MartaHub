@@ -23,7 +23,7 @@ void ULocationRestorerComponent::UpdateRestoring_Implementation()
 void ULocationRestorerComponent::UpdateLocation_Implementation()
 {
 	const auto Owner = GetOwner();
-	const auto Alpha = Lerp->GetFloatValue(ElapsedTime);
+	const auto Alpha = GetAlpha();
 	const auto NewLocation = FMath::Lerp(StartLocation, InitialLocation, Alpha);
 
 	const auto bSweep = false;
@@ -35,9 +35,10 @@ void ULocationRestorerComponent::Restore_Implementation()
 {
 	if (bRunning) { return; }
 	Super::Restore_Implementation();
-	
-	URestorerHelper::DisablePhysicsAndCollision(GetOwner());
-	StartLocation = GetOwner()->GetActorLocation();
+
+	const auto Owner = GetOwner();
+	URestorerHelper::DisablePhysicsAndCollision(Owner);
+	StartLocation = Owner->GetActorLocation();
 }
 
 void ULocationRestorerComponent::CreateSnapshot(AActor* Owner)
