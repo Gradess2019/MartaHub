@@ -17,4 +17,10 @@ class MARTAHUB_API URestorerHelper : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, Category = "Restorer Helper")
 	static void DisablePhysicsAndCollision(AActor* Actor, const bool bIncludeChildren = true);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Restorer Helper")
+	static int GetReferenceCount(UObject* Object);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Restorer Helper")
+	static void GetReferences(UObject* Object, UPARAM(DisplayName="References") TArray<UObject*>& OutReferences);
 };
