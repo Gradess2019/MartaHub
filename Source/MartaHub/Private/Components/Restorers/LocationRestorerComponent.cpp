@@ -32,10 +32,10 @@ void ULocationRestorerComponent::UpdateLocation_Implementation()
 	Owner->SetActorLocation(NewLocation, bSweep, OutSweepHitResult, ETeleportType::ResetPhysics);
 }
 
-void ULocationRestorerComponent::Restore_Implementation()
+void ULocationRestorerComponent::ClientRestore_Implementation()
 {
 	if (bRunning) { return; }
-	Super::Restore_Implementation();
+	Super::ClientRestore_Implementation();
 
 	const auto Owner = GetOwner();
 	URestorerHelper::DisablePhysicsAndCollision(Owner);

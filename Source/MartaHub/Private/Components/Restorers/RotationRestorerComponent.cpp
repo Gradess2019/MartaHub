@@ -33,10 +33,10 @@ void URotationRestorerComponent::UpdateRestoring_Implementation()
 	GetOwner()->SetActorRotation(NewRotation);
 }
 
-void URotationRestorerComponent::Restore_Implementation()
+void URotationRestorerComponent::ClientRestore_Implementation()
 {
 	if (bRunning) { return; }
-	Super::Restore_Implementation();
+	Super::ClientRestore_Implementation();
 
 	const auto Owner = GetOwner();
 	URestorerHelper::DisablePhysicsAndCollision(Owner);

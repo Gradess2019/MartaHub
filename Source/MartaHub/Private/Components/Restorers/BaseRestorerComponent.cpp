@@ -3,6 +3,7 @@
 #include "Components/Restorers/BaseRestorerComponent.h"
 #include "Interfaces/Snapshots/SnapshotManager.h"
 #include "Interfaces/Restorers/Restorable.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Snapshots/SnapshotBase.h"
 
 UBaseRestorerComponent::UBaseRestorerComponent()
@@ -11,7 +12,8 @@ UBaseRestorerComponent::UBaseRestorerComponent()
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	SetIsReplicatedByDefault(true);
 
-	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveFloatAsset(TEXT("CurveFloat'/Game/MartaHub/Curves/Curve_DefaultLerp_Float.Curve_DefaultLerp_Float'"));
+	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveFloatAsset(
+		TEXT("CurveFloat'/Game/MartaHub/Curves/Curve_DefaultLerp_Float.Curve_DefaultLerp_Float'"));
 	Lerp = CurveFloatAsset.Object;
 
 	ElapsedTime = 0.f;
@@ -19,9 +21,9 @@ UBaseRestorerComponent::UBaseRestorerComponent()
 }
 
 void UBaseRestorerComponent::TickComponent(
-    float DeltaTime,
-    ELevelTick TickType,
-    FActorComponentTickFunction* ThisTickFunction
+	float DeltaTime,
+	ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction
 )
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -60,16 +62,33 @@ void UBaseRestorerComponent::CompleteRestoring()
 	if (Snapshot->CanRestore())
 	{
 		Execute_Restore(Snapshot);
+
+		OnRestoringComplete.Broadcast();
 	}
-	
+
 	const auto Owner = GetOwner();
 	const auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
 	Manager->Execute_ReleaseSnapshot(Manager.GetObject(), Snapshot);
-	
+
 	Snapshot = nullptr;
 }
 
 void UBaseRestorerComponent::Restore_Implementation()
+{
+	const auto bStandalone = UKismetSystemLibrary::IsStandalone(this);
+	const auto bServer = UKismetSystemLibrary::IsServer(this);
+
+	if (bStandalone)
+	{
+		ClientRestore();
+	}
+	else if (bServer)
+	{
+		MulticastRestore();
+	}
+}
+
+void UBaseRestorerComponent::ClientRestore_Implementation()
 {
 	if (bRunning) { return; }
 	bRunning = true;
@@ -77,6 +96,11 @@ void UBaseRestorerComponent::Restore_Implementation()
 
 	const auto Owner = GetOwner();
 	SetupSnapshot(Owner);
+}
+
+void UBaseRestorerComponent::MulticastRestore_Implementation()
+{
+	ClientRestore();
 }
 
 void UBaseRestorerComponent::SetupSnapshot(AActor* Owner)
@@ -88,5 +112,3 @@ float UBaseRestorerComponent::GetAlpha() const
 {
 	return Lerp->GetFloatValue(ElapsedTime);
 }
-
-

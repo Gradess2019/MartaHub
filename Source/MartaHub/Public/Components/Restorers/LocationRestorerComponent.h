@@ -27,10 +27,8 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Location Restorer")
 	void UpdateLocation();
 
-	// Restorer interface begin
-	virtual void Restore_Implementation() override;
-	// Restorer interface end
-	
+	virtual void ClientRestore_Implementation() override;
+
 	virtual void SetupSnapshot(AActor* Owner) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

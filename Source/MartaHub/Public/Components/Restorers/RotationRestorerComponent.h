@@ -23,12 +23,13 @@ protected:
 	FRotator StartRotation;
 
 	virtual void BeginPlay() override;
-	
+
 public:
 	virtual void UpdateRestoring_Implementation() override;
-	virtual void Restore_Implementation() override;
 
 protected:
+	virtual void ClientRestore_Implementation() override;
+	
 	virtual void SetupSnapshot(AActor* Owner) override;
 	virtual void GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
