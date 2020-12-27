@@ -10,6 +10,7 @@
 class USnapshotBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FRestoringComplete);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRestoringUpdate, float, Alpha);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Abstract, Blueprintable)
 class MARTAHUB_API UBaseRestorerComponent : public UActorComponent, public IRestorer
@@ -37,6 +38,9 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Base Restorer Component")
 	FRestoringComplete OnRestoringComplete;
 
+	UPROPERTY(BlueprintAssignable, Category = "Base Restorer Component")
+	FRestoringUpdate OnRestoringUpdate;
+
 public:
 
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -46,10 +50,10 @@ protected:
 	UFUNCTION()
 	virtual void UpdateElapsedTime(float DeltaTime);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Base Restorer")
+	UFUNCTION(BlueprintNativeEvent, Category = "Base Restorer Component")
 	void UpdateRestoring();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Base Restorer Component")
 	void CompleteRestoring();
 
 public:
@@ -61,7 +65,7 @@ protected:
 	UFUNCTION(
 		BlueprintCallable,
 		BlueprintNativeEvent,
-		Category = "Rotation Restorer"
+		Category = "Base Restorer Component"
 	)
 	void ClientRestore();
 
@@ -69,14 +73,14 @@ protected:
 		BlueprintCallable,
 		NetMulticast,
 		Reliable,
-		Category = "Rotation Restorer"
+		Category = "Base Restorer Component"
 	)
 	void MulticastRestore();
 
 	// TODO: Add BlueprintNativeEvent
-	UFUNCTION(BlueprintCallable, Category = "Base Restorer")
+	UFUNCTION(BlueprintCallable, Category = "Base Restorer Component")
 	virtual void SetupSnapshot(AActor* Owner);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Base Restorer")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Base Restorer Component")
 	float GetAlpha() const;
 };
