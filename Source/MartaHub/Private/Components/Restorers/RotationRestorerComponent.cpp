@@ -30,7 +30,30 @@ void URotationRestorerComponent::UpdateRestoring_Implementation()
 		bShortestPath
 	);
 
-	GetOwner()->SetActorRotation(NewRotation);
+	GetOwner()->SetActorRotation(NewRotation, ETeleportType::ResetPhysics);
+}
+
+void URotationRestorerComponent::SetReplicatedRotation(FRotator NewRotation) const
+{
+	ResetReplicatedRotation();
+	auto ReplicatedMovement = GetOwner()->GetReplicatedMovement_Mutable();
+	ReplicatedMovement.Rotation = NewRotation;
+	GetOwner()->SetReplicatedMovement(ReplicatedMovement);
+}
+
+void URotationRestorerComponent::ResetReplicatedRotation() const
+{
+	auto ReplicatedMovement = GetOwner()->GetReplicatedMovement_Mutable();
+	ReplicatedMovement.LinearVelocity = FVector::ZeroVector;
+	ReplicatedMovement.AngularVelocity = FVector::ZeroVector;
+	GetOwner()->SetReplicatedMovement(ReplicatedMovement);
+}
+
+void URotationRestorerComponent::GetReplicatedRotation(FRotator& Rotation, FVector& AngularVelocity) const
+{
+	const auto ReplicatedMovement = GetOwner()->GetReplicatedMovement();
+	Rotation = ReplicatedMovement.Rotation;
+	AngularVelocity = ReplicatedMovement.AngularVelocity;
 }
 
 void URotationRestorerComponent::ClientRestore_Implementation()
@@ -54,5 +77,7 @@ void URotationRestorerComponent::SetupSnapshot(AActor* Owner)
 
 void URotationRestorerComponent::GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
 	DOREPLIFETIME_CONDITION(URotationRestorerComponent, InitialRotation, COND_InitialOnly);
 }

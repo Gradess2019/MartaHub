@@ -27,9 +27,18 @@ protected:
 public:
 	virtual void UpdateRestoring_Implementation() override;
 
+	UFUNCTION(BlueprintCallable, Category = "Rotation Restorer")
+	void SetReplicatedRotation(FRotator NewRotation) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Rotation Restorer")
+	void ResetReplicatedRotation() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Rotation Restorer")
+	void GetReplicatedRotation(FRotator& Rotation, FVector& AngularVelocity) const;
+
 protected:
 	virtual void ClientRestore_Implementation() override;
-	
+
 	virtual void SetupSnapshot(AActor* Owner) override;
 	virtual void GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
