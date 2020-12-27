@@ -32,6 +32,7 @@ void UBaseRestorerComponent::TickComponent(
 	{
 		UpdateElapsedTime(DeltaTime);
 		UpdateRestoring();
+		OnRestoringUpdate.Broadcast(GetAlpha());
 	}
 	else
 	{
@@ -55,22 +56,24 @@ void UBaseRestorerComponent::UpdateRestoring_Implementation()
 
 void UBaseRestorerComponent::CompleteRestoring()
 {
+	bRunning = false;
 	ElapsedTime = 0.f;
 	SetComponentTickEnabled(false);
 
 	if (!IsValid(Snapshot)) { return; }
-	if (Snapshot->CanRestore())
+	
+	auto SnapshotToRelease = Snapshot;
+	Snapshot = nullptr;
+	
+	if (SnapshotToRelease->CanRestore())
 	{
-		Execute_Restore(Snapshot);
-
+		Execute_Restore(SnapshotToRelease);
 		OnRestoringComplete.Broadcast();
 	}
 
 	const auto Owner = GetOwner();
 	const auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
-	Manager->Execute_ReleaseSnapshot(Manager.GetObject(), Snapshot);
-
-	Snapshot = nullptr;
+	Manager->Execute_ReleaseSnapshot(Manager.GetObject(), SnapshotToRelease);
 }
 
 void UBaseRestorerComponent::Restore_Implementation()
