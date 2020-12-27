@@ -59,6 +59,7 @@ void USnapshotManagerComponent::ReleaseSnapshot_Implementation(USnapshotBase* Sn
 	if (Snapshot->GetReferenceCount() == 0)
 	{
 		Snapshots.Remove(Key);
-		Snapshot->MarkPendingKill();
+		// FIXME: Do we have to mark snapshot as pending kill? It clears timer in UActorPhysicsSnapshot
+		// Snapshot->MarkPendingKill();
 	}
 }
