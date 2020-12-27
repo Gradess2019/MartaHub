@@ -9,6 +9,8 @@
 
 class USnapshotBase;
 
+DECLARE_LOG_CATEGORY_EXTERN(LogRestorerComponent, Log, All);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FRestoringComplete);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRestoringUpdate, float, Alpha);
 
@@ -83,4 +85,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Base Restorer Component")
 	float GetAlpha() const;
+
+	void PrintError(const FString Message, const char* FunctionName, const int& Line);
 };

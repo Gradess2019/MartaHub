@@ -6,6 +6,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Snapshots/SnapshotBase.h"
 
+DEFINE_LOG_CATEGORY(LogRestorerComponent);
+
 UBaseRestorerComponent::UBaseRestorerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -114,4 +116,9 @@ void UBaseRestorerComponent::SetupSnapshot(AActor* Owner)
 float UBaseRestorerComponent::GetAlpha() const
 {
 	return Lerp->GetFloatValue(ElapsedTime);
+}
+
+void UBaseRestorerComponent::PrintError(const FString Message, const char* FunctionName, const int& Line)
+{
+	UE_LOG(LogRestorerComponent, Error, TEXT("%s, Line: %d, Message: %s"), *FString(FunctionName), Line, *Message);
 }
