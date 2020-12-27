@@ -17,3 +17,13 @@ void UComponentPhysicsSnapshot::Restore_Implementation()
 	Component->SetSimulatePhysics(bSimulatePhysics);
 	Component->SetCollisionEnabled(CollisionType);
 }
+
+void UComponentPhysicsSnapshot::RestoreOnlyPhysics_Implementation()
+{
+	Component->SetSimulatePhysics(bSimulatePhysics);
+}
+
+void UComponentPhysicsSnapshot::RestoreOnlyCollision_Implementation()
+{
+	Component->SetCollisionEnabled(CollisionType);
+}

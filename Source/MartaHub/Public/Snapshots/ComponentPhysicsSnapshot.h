@@ -27,10 +27,16 @@ protected:
 	TEnumAsByte<ECollisionEnabled::Type> CollisionType;
 
 public:
-
+	
 	virtual bool Save_Implementation(UActorComponent* InComponent) override;
 	
 	// IRestorer implementation begin
 	virtual void Restore_Implementation() override;
 	// IRestorer implementation end
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Component Physics Snapshot")
+	void RestoreOnlyCollision();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Component Physics Snapshot")
+	void RestoreOnlyPhysics();
 };
