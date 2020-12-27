@@ -16,10 +16,10 @@ class MARTAHUB_API URotationRestorerComponent : public UBaseRestorerComponent
 
 protected:
 
-	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Rotation Restorer")
+	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Rotation Restorer Component")
 	FRotator InitialRotation;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Rotation Restorer")
+	UPROPERTY(BlueprintReadWrite, Category = "Rotation Restorer Component")
 	FRotator StartRotation;
 
 	virtual void BeginPlay() override;
@@ -27,18 +27,8 @@ protected:
 public:
 	virtual void UpdateRestoring_Implementation() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Rotation Restorer")
-	void SetReplicatedRotation(FRotator NewRotation) const;
-
-	UFUNCTION(BlueprintCallable, Category = "Rotation Restorer")
-	void ResetReplicatedRotation() const;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Rotation Restorer")
-	void GetReplicatedRotation(FRotator& Rotation, FVector& AngularVelocity) const;
-
 protected:
 	virtual void ClientRestore_Implementation() override;
-
 	virtual void SetupSnapshot(AActor* Owner) override;
 	virtual void GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

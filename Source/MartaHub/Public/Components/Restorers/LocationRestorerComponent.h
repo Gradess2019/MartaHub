@@ -13,7 +13,6 @@ class MARTAHUB_API ULocationRestorerComponent : public UBaseRestorerComponent
 	GENERATED_BODY()
 
 protected:
-
 	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Location Restorer")
 	FVector InitialLocation;
 

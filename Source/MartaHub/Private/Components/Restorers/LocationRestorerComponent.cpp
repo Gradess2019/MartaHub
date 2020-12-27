@@ -42,13 +42,33 @@ void ULocationRestorerComponent::ClientRestore_Implementation()
 	StartLocation = Owner->GetActorLocation();
 }
 
+// FIXME: Code duplication. See URotationRestorerComponent
 void ULocationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
+	const auto bImplements = Owner->Implements<URestorable>();
 	// TODO: What about Object Pool pattern?
-	if (Owner->GetClass()->ImplementsInterface(URestorable::StaticClass()))
+	if (bImplements)
 	{
 		auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
-		Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
+		if (!Manager)
+		{
+			const auto Message = FString().Appendf(
+				TEXT("%s doesn't return ISnapshotManager. Check GetSnapshotManager()!"),
+				*GetOwner()->GetName()
+			);
+			PrintError(Message, __FUNCTION__, __LINE__);
+		}
+		else
+		{
+			Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
+		}
+	} else
+	{
+		const auto Message = FString().Appendf(
+            TEXT("%s doesn't implements IRestorable interface!"),
+            *GetOwner()->GetName()
+        );
+		PrintError(Message, __FUNCTION__, __LINE__);
 	}
 }
 

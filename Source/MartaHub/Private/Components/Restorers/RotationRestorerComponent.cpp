@@ -33,29 +33,6 @@ void URotationRestorerComponent::UpdateRestoring_Implementation()
 	GetOwner()->SetActorRotation(NewRotation, ETeleportType::ResetPhysics);
 }
 
-void URotationRestorerComponent::SetReplicatedRotation(FRotator NewRotation) const
-{
-	ResetReplicatedRotation();
-	auto ReplicatedMovement = GetOwner()->GetReplicatedMovement_Mutable();
-	ReplicatedMovement.Rotation = NewRotation;
-	GetOwner()->SetReplicatedMovement(ReplicatedMovement);
-}
-
-void URotationRestorerComponent::ResetReplicatedRotation() const
-{
-	auto ReplicatedMovement = GetOwner()->GetReplicatedMovement_Mutable();
-	ReplicatedMovement.LinearVelocity = FVector::ZeroVector;
-	ReplicatedMovement.AngularVelocity = FVector::ZeroVector;
-	GetOwner()->SetReplicatedMovement(ReplicatedMovement);
-}
-
-void URotationRestorerComponent::GetReplicatedRotation(FRotator& Rotation, FVector& AngularVelocity) const
-{
-	const auto ReplicatedMovement = GetOwner()->GetReplicatedMovement();
-	Rotation = ReplicatedMovement.Rotation;
-	AngularVelocity = ReplicatedMovement.AngularVelocity;
-}
-
 void URotationRestorerComponent::ClientRestore_Implementation()
 {
 	if (bRunning) { return; }
@@ -68,16 +45,36 @@ void URotationRestorerComponent::ClientRestore_Implementation()
 
 void URotationRestorerComponent::SetupSnapshot(AActor* Owner)
 {
-	if (Owner->GetClass()->ImplementsInterface(URestorable::StaticClass()))
+	const auto bImplements = Owner->Implements<URestorable>();
+	if (bImplements)
 	{
-		const auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
-		Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
+		auto Manager = IRestorable::Execute_GetSnapshotManager(Owner);
+		if (!Manager)
+		{
+			const auto Message = FString().Appendf(
+				TEXT("%s doesn't return ISnapshotManager. Check GetSnapshotManager()!"),
+				*GetOwner()->GetName()
+			);
+			PrintError(Message, __FUNCTION__, __LINE__);
+		}
+		else
+		{
+			Snapshot = Manager->Execute_TakeSnapshot(Manager.GetObject(), UActorPhysicsSnapshot::StaticClass());
+		}
+	}
+	else
+	{
+		const auto Message = FString().Appendf(
+			TEXT("%s doesn't implements IRestorable interface!"),
+			*GetOwner()->GetName()
+		);
+		PrintError(Message, __FUNCTION__, __LINE__);
 	}
 }
 
 void URotationRestorerComponent::GetLifetimeReplicatedProps(::TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
+
 	DOREPLIFETIME_CONDITION(URotationRestorerComponent, InitialRotation, COND_InitialOnly);
 }
