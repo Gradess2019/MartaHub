@@ -113,4 +113,5 @@ void UObjectSelectorComponent::DisableSelectedActor_Implementation()
 {
 	if (!IsValid(SelectedActor)) { return; }
 	ISelectable::Execute_Unselect(SelectedActor);
+	SelectedActor = nullptr;
 }
