@@ -24,7 +24,6 @@ UPickupableComponent::UPickupableComponent()
 
 void UPickupableComponent::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s: BeginPlay"), GetOwner()->HasAuthority() ? TEXT("Server") : TEXT("Client"));
 	Super::BeginPlay();
 
 	const auto bSuccess = SetupRoot();
@@ -36,7 +35,6 @@ void UPickupableComponent::BeginPlay()
 
 bool UPickupableComponent::SetupRoot_Implementation()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s: SetupRoot"), GetOwner()->HasAuthority() ? TEXT("Server") : TEXT("Client"));
 	Root = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	if (!IsValid(Root))
 	{
