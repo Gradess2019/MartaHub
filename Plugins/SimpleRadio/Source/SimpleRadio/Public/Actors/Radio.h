@@ -22,6 +22,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Radio")
 	UMediaSoundComponent* MediaSoundComponent;
 
+	/** Media player of Media Sound Component*/
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Radio")
+	UMediaPlayer* MediaPlayer;
+
 	/** Should play media on begin play */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Radio")
 	bool bAutoPlay;

@@ -17,11 +17,9 @@ ARadio::ARadio()
 
 	const auto MediaPlayerPath = TEXT("MediaPlayer'/SimpleRadio/Media/MP_Radio.MP_Radio'");
 	static ConstructorHelpers::FObjectFinder<UMediaPlayer> MediaPlayerAsset(MediaPlayerPath);
-	const auto MediaPlayer = MediaPlayerAsset.Object;
+	MediaPlayer = MediaPlayerAsset.Object;
 #if WITH_EDITOR
 	MediaSoundComponent->SetDefaultMediaPlayer(MediaPlayer);
-#else
-	MediaSoundComponent->SetMediaPlayer(MediaPlayer);
 #endif
 
 	MediaSoundComponent->bAllowSpatialization = true;
@@ -44,6 +42,11 @@ void ARadio::BeginPlay()
 {
 	Super::BeginPlay();
 
+#if !WITH_EDITOR
+	MediaSoundComponent->SetMediaPlayer(MediaPlayer);
+	MediaSoundComponent->UpdatePlayer();
+#endif
+
 	const auto bServer = HasAuthority();
 	if (!bServer) { return; }
 
@@ -57,9 +60,9 @@ void ARadio::BindUnlockFunction_Implementation()
 	FScriptDelegate UnlockDelegate;
 	UnlockDelegate.BindUFunction(this, "Unlock");
 
-	auto MediaPlayer = GetMedia();
-	MediaPlayer->OnMediaOpened.Add(UnlockDelegate);
-	MediaPlayer->OnMediaOpenFailed.Add(UnlockDelegate);
+	auto CurrentMediaPlayer = GetMedia();
+	CurrentMediaPlayer->OnMediaOpened.Add(UnlockDelegate);
+	CurrentMediaPlayer->OnMediaOpenFailed.Add(UnlockDelegate);
 }
 
 void ARadio::SetupStreams_Implementation()
@@ -84,9 +87,9 @@ void ARadio::SetVolume_Implementation(const float NewVolume)
 
 void ARadio::Open_Implementation(const FString& URL)
 {
-	auto MediaPlayer = GetMedia();
-	MediaPlayer->Close();
-	MediaPlayer->OpenUrl(URL);
+	auto CurrentMediaPlayer = GetMedia();
+	CurrentMediaPlayer->Close();
+	CurrentMediaPlayer->OpenUrl(URL);
 }
 
 UMediaPlayer* ARadio::GetMedia_Implementation()
