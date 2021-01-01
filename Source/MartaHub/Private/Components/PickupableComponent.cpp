@@ -24,6 +24,7 @@ UPickupableComponent::UPickupableComponent()
 
 void UPickupableComponent::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s: BeginPlay"), GetOwner()->HasAuthority() ? TEXT("Server") : TEXT("Client"));
 	Super::BeginPlay();
 
 	const auto bSuccess = SetupRoot();
@@ -35,6 +36,7 @@ void UPickupableComponent::BeginPlay()
 
 bool UPickupableComponent::SetupRoot_Implementation()
 {
+	UE_LOG(LogTemp, Warning, TEXT("%s: SetupRoot"), GetOwner()->HasAuthority() ? TEXT("Server") : TEXT("Client"));
 	Root = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	if (!IsValid(Root))
 	{
@@ -137,6 +139,7 @@ void UPickupableComponent::ClearPickup_Implementation()
 
 void UPickupableComponent::Throw_Implementation(float Force)
 {
+	if (!IsValid(Root)) { return; }
 	const auto Direction = GetOwner()->GetActorForwardVector();
 	const auto TotalForce = Root->GetMass() * Force;
 	const auto Impulse = TotalForce * Direction;
@@ -147,6 +150,7 @@ void UPickupableComponent::Throw_Implementation(float Force)
 // PrepareForPickup() RPCs
 void UPickupableComponent::ClientPreparePickup_Implementation()
 {
+	if (!IsValid(Root)) { return; }
 	Root->SetSimulatePhysics(false);
 	Root->SetCollisionProfileName(PickupProfileName);
 
@@ -182,6 +186,7 @@ void UPickupableComponent::MulticastPreparePickup_Implementation()
 // ClearPickup() RPCs
 void UPickupableComponent::ClientClearPickup_Implementation()
 {
+	if (!IsValid(Root)) { return; }
 	Root->SetSimulatePhysics(true);
 	Root->SetCollisionProfileName(ClearProfileName);
 	Root->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
