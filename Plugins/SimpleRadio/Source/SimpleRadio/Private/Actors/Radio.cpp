@@ -38,14 +38,18 @@ ARadio::ARadio()
 	bReplicates = true;
 }
 
-void ARadio::BeginPlay()
+void ARadio::PostInitializeComponents()
 {
-	Super::BeginPlay();
-
+	Super::PostInitializeComponents();
 #if !WITH_EDITOR
 	MediaSoundComponent->SetMediaPlayer(MediaPlayer);
 	MediaSoundComponent->UpdatePlayer();
 #endif
+}
+
+void ARadio::BeginPlay()
+{
+	Super::BeginPlay();
 
 	const auto bServer = HasAuthority();
 	if (!bServer) { return; }

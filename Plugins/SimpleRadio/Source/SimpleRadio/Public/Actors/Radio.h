@@ -54,6 +54,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Radio | Volume")
 	float MaxVolume;
 
+	virtual void PostInitializeComponents() override;
+
 	virtual void BeginPlay() override;
 
 	/** Binds Unlock() to OnMediaOpened and OnMediaOpenFailed delegates */
