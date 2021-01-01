@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Libraries/PickupHelper.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogPickupableComponent);
 
@@ -17,7 +18,7 @@ UPickupableComponent::UPickupableComponent()
 	ClearProfileName = FName("PhysicsActor");
 
 	ClassFilter = AActor::StaticClass();
-	
+
 	CheckOverlapsRate = 0.1f;
 	InterpolationSpeed = 10.f;
 }
@@ -29,8 +30,12 @@ void UPickupableComponent::BeginPlay()
 	const auto bSuccess = SetupRoot();
 	if (!bSuccess) { return; }
 
-	SetupOffset();
-	CacheBound();
+	const auto bServer = GetOwner()->HasAuthority();
+	if (bServer)
+	{
+		SetupOffset();
+		CacheBound();
+	}
 }
 
 bool UPickupableComponent::SetupRoot_Implementation()
@@ -143,9 +148,11 @@ void UPickupableComponent::Throw_Implementation(float Force)
 	const auto Impulse = TotalForce * Direction;
 	Root->AddImpulse(Impulse);
 }
+
 // IPickupable end
 
 // PrepareForPickup() RPCs
+
 void UPickupableComponent::ClientPreparePickup_Implementation()
 {
 	if (!IsValid(Root)) { return; }
@@ -182,6 +189,7 @@ void UPickupableComponent::MulticastPreparePickup_Implementation()
 }
 
 // ClearPickup() RPCs
+
 void UPickupableComponent::ClientClearPickup_Implementation()
 {
 	if (!IsValid(Root)) { return; }
@@ -205,4 +213,12 @@ bool UPickupableComponent::ServerClearPickup_Validate()
 void UPickupableComponent::MulticastClearPickup_Implementation()
 {
 	ClientClearPickup();
+}
+
+void UPickupableComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(UPickupableComponent, Offset, COND_InitialOnly);
+	DOREPLIFETIME_CONDITION(UPickupableComponent, CachedBound, COND_InitialOnly);
 }
