@@ -25,11 +25,11 @@ public:
 protected:
 
 	/** Offset from pickup location */
-	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
+	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Pickupable Component")
 	FVector Offset;
 
 	/** Cached actor X bound */
-	UPROPERTY(BlueprintReadWrite, Category = "Pickupable Component")
+	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Pickupable Component")
 	float CachedBound;
 
 	/** Parent root */
@@ -178,4 +178,6 @@ protected:
 	)
 	void MulticastClearPickup();
 	// IPickupable replication end
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
