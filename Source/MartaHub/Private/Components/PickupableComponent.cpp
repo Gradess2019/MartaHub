@@ -21,6 +21,9 @@ UPickupableComponent::UPickupableComponent()
 
 	CheckOverlapsRate = 0.1f;
 	InterpolationSpeed = 10.f;
+
+	SetIsReplicatedByDefault(true);
+	SetNetAddressable();
 }
 
 void UPickupableComponent::BeginPlay()
